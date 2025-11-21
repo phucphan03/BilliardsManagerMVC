@@ -16,6 +16,12 @@
 # Mono auto generated files
 mono_crash.*
 
+# Cấu hình .NET / MVC
+appsettings.json
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -361,3 +367,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Config files
+appsettings.json
