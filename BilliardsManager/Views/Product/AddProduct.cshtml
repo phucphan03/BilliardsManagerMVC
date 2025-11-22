@@ -22,26 +22,26 @@
 
                         <div class="mb-3">
                             <label asp-for="Price" class="form-label">Giá sản phẩm</label>
-                            <input asp-for="Price" class="form-control" type="number" step="0.01" min="0" />
-                            <span asp-validation-for="Price" class="text-danger"></span>
+                            <input asp-for="Price" class="form-control" type="text" id="PriceInput" />
                         </div>
 
                         <div class="mb-3">
                             <label asp-for="CategoryID" class="form-label">Danh mục</label>
-                            <select asp-for="CategoryID" class="form-select" asp-items="@(new SelectList(categories, "ID", "Name"))">
+                            <select asp-for="CategoryID" class="form-select" asp-items="@(new SelectList(categories, "CategoryID", "Name"))">
                                 <option value="">-- Chọn danh mục --</option>
                             </select>
                             <span asp-validation-for="CategoryID" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="ImagePath" class="form-label">Hình ảnh</label>
-                            <input asp-for="ImagePath" type="file" class="form-control" />
+                            <label asp-for="ProductImage" class="form-label">Hình ảnh</label>
+                            <input asp-for="ProductImage" type="file" class="form-control" />
+                            <span asp-validation-for="ProductImage" class="text-danger"></span>
                         </div>
-
+                        
                         <div class="d-flex justify-content-between mt-4">
                             <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Trở về</a>
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Thêm sản phẩm</button>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Thêm</button>
                         </div>
                     </form>
                 </div>
@@ -52,4 +52,22 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        const priceInput = document.getElementById('PriceInput');
+
+        priceInput.addEventListener('input', function(e) {
+            let value = this.value.replace(/\D/g, ''); // xóa tất cả ký tự không phải số
+            if (value) {
+                this.value = Number(value).toLocaleString('vi-VN'); // format VND
+            } else {
+                this.value = '';
+            }
+        });
+
+        // Khi submit, convert lại về number để gửi lên server
+        priceInput.closest('form').addEventListener('submit', function() {
+            let numericValue = priceInput.value.replace(/\./g, ''); // remove dấu '.'
+            priceInput.value = numericValue;
+        });
+    </script>
 }

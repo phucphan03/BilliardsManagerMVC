@@ -8,16 +8,16 @@ namespace BusinessObject.FacadeService
     public class FacadeService : IFacadeService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IHostEnvironment _env;
 
         public ICategoryService CategoryService { get; private set; }
         public IProductService ProductService { get; private set; }
-        public FacadeService(IUnitOfWork unitOfWork, IHostEnvironment env)
+        public ICueStickService CueStickService { get; private set; }
+        public FacadeService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _env = env;
             CategoryService = new CategoryService(_unitOfWork);
-            ProductService = new ProductService(_unitOfWork, _env);
+            ProductService = new ProductService(_unitOfWork);
+            CueStickService = new CueStickService(_unitOfWork);
         }
 
     }

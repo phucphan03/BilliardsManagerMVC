@@ -25,7 +25,7 @@ namespace BilliardsManager.Controllers
                     p.Name,
                     p.Price,
                     CategoryName = p.Category != null ? p.Category.Name : "N/A",
-                    p.ImagePath
+                    ImageUrl = p.ProductImage != null ? p.ProductImage.ImageUrl : null
                 })
                 .ToList();
             return Json(new { data = products });
@@ -39,11 +39,11 @@ namespace BilliardsManager.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(Product product, IFormFile? ImageFile)
+        public async Task<IActionResult> AddProduct(Product product, IFormFile? ProductImage)
         {
             if (ModelState.IsValid)
             {
-                await _facadeService.ProductService.AddProductAsync(product, ImageFile);
+                await _facadeService.ProductService.AddProductAsync(product, ProductImage);
                 TempData["success"] = "Tạo sản phẩm thành công";
                 return RedirectToAction("Index");
             }
@@ -64,11 +64,11 @@ namespace BilliardsManager.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditProduct(Product product)
+        public async Task<IActionResult> EditProduct(Product product, IFormFile? ProductImage)
         {
             if (ModelState.IsValid)
             {
-                await _facadeService.ProductService.UpdateProductAsync(product);
+                await _facadeService.ProductService.UpdateProductAsync(product, ProductImage);
                 TempData["success"] = "Cập nhật sản phẩm thành công";
                 return RedirectToAction("Index");
             }

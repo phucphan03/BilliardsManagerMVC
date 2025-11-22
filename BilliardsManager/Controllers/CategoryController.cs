@@ -24,7 +24,7 @@ namespace BilliardsManager.Controllers
                 .GetAllCategoriesAsync(includeProperties: "Products"))
                 .Select(c => new
                 {
-                    c.ID,
+                    c.CategoryID,
                     c.Name,
                     ProductCount = c.Products?.Count(),
                 })
@@ -32,13 +32,13 @@ namespace BilliardsManager.Controllers
             return Json(new { data = categories });
         }
 
-        public IActionResult AddCategories()
+        public IActionResult AddCategory()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCategories(Category category)
+        public async Task<IActionResult> AddCategory(Category category)
         {
             if (ModelState.IsValid)
             {
@@ -50,7 +50,7 @@ namespace BilliardsManager.Controllers
             return View(category);
         }
 
-        public async Task<IActionResult> EditCategories(Guid id)
+        public async Task<IActionResult> EditCategory(Guid id)
         {
             var category = await _facadeService.CategoryService.GetCategoryByIdAsync(id);
             if (category == null)
@@ -62,7 +62,7 @@ namespace BilliardsManager.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditCategories(Category category)
+        public async Task<IActionResult> EditCategory(Category category)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +75,7 @@ namespace BilliardsManager.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteCategories(Guid id)
+        public async Task<IActionResult> DeleteCategory(Guid id)
         {
             var category = await _facadeService.CategoryService.GetCategoryByIdAsync(id);
             if (category == null)

@@ -1,8 +1,22 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Bàn bida";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Bàn bida</h1>
+    <div class="container mt-4">
+        @for (int row = 0; row < 3; row++)
+        {
+            <div class="row mb-3">
+                @for (int col = 0; col < 3; col++)
+                {
+                    <div class="col">
+                        <div class="border w-full h-full">
+                            Ô lớn @(row + 1)-@(col + 1)
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
 </div>

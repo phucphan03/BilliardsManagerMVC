@@ -6,7 +6,7 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            url: '/product/getallproduct',
+            url: '/CueStick/getallcuestick',
             type: 'GET',
             dataSrc: 'data'
         },
@@ -34,7 +34,12 @@ function loadDataTable() {
                 }
             },
             {
-                "data": 'price',
+                "data": 'brand',
+                "with": "20%",
+                "className": "text-center align-middle",
+            },
+            {
+                "data": 'pricePerTurn',
                 "width": "15%",
                 "className": "text-center align-middle",
                 "render": function (data, type, row, meta) {
@@ -42,22 +47,18 @@ function loadDataTable() {
                     return data.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                 }
             },
-            {
-                "data": 'categoryName',
-                "with": "20%",
-                "className": "text-center align-middle",
-            },
+
             {
                 "width": "30%",
                 "render": function (data, type, row, meta) {
                     return `
                     <div class="btn-group d-flex justify-content-between" role="group">
-                        <a href="/product/EditProduct?id=${row.productID}"
+                        <a href="/CueStick/EditCueStick?id=${row.cueStickID}"
                            class="btn btn-dark flex-grow-1 mx-1">
                            <i class="fas fa-edit me-2"></i>Sửa sản phẩm
                         </a>
 
-                        <a onclick="Delete('/product/DeleteProduct?id=${row.productID}')"
+                        <a onclick="Delete('/CueStick/DeleteCueStick?id=${row.cueStickID}')"
                            class="btn btn-danger text-white flex-grow-1 mx-1">
                            <i class="fas fa-trash-alt me-2"></i>Xóa sản phẩm
                         </a>

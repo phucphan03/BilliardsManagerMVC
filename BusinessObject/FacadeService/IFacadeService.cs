@@ -5,5 +5,6 @@ namespace BusinessObject.FacadeService
     {
         ICategoryService CategoryService { get; }
         IProductService ProductService { get; }
+        ICueStickService CueStickService { get; }
     }
 }

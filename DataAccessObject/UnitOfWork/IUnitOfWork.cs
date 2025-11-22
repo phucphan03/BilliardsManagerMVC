@@ -11,6 +11,7 @@ namespace DataAccessObject.UnitOfWork
         ITableProductRepo TableProductRepo { get; }
         ITableSessionRepo TableSessionRepo { get; }
         ITableSessionCueRepo TableSessionCueRepo { get; }
+        IImageRepo ImageRepo { get; }
         Task SaveAsync();
     }
 }

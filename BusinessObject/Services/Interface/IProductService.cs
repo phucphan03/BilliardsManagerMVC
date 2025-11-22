@@ -7,8 +7,8 @@ namespace BusinessObject.Services.Interface
     {
         Task<IEnumerable<Product>> GetAllProductAsync();
         Task<Product?> GetProductByIdAsync(Guid id);
-        Task AddProductAsync(Product product, IFormFile? imageFile);
-        Task UpdateProductAsync(Product product);
+        Task AddProductAsync(Product product, IFormFile? ProductImage);
+        Task UpdateProductAsync(Product product, IFormFile? ProductImage);
         Task DeleteProductAsync(Guid id);
     }
 }

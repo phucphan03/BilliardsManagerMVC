@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessObject.Models
 {
@@ -10,7 +11,10 @@ namespace DataAccessObject.Models
         public decimal Price { get; set; }
         public Guid CategoryID { get; set; }
         public Category? Category { get; set; }
-        public string? ImagePath { get; set; }
+        public Guid? ProductImageID { get; set; }
         public ICollection<TableProduct>? TableProducts { get; set; }
+
+        [ForeignKey("ProductImageID")]
+        public Image? ProductImage { get; set; }
     }
 }

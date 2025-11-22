@@ -6,7 +6,7 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            url: '/category/getallcategories',
+            url: '/Category/getallcategories',
             type: 'GET',
             dataSrc: 'data'
         },
@@ -36,16 +36,23 @@ function loadDataTable() {
                     if (data === 0) {
                         return `
                         <div class="btn-group d-flex justify-content-between" role="group">
-                            <a href="/Category/EditCategories?id=${row.id}" 
-                               class="btn btn-dark flex-grow-1 mx-1">Sửa danh mục</a>
+                            <a href="/Category/EditCategory?id=${row.categoryID}"
+                               class="btn btn-dark flex-grow-1 mx-1">
+                               <i class="fas fa-edit me-2"></i>Sửa danh mục
+                            </a>
 
-                            <a onclick="Delete('/Category/DeleteCategories?id=${row.id}')" 
-                               class="btn btn-danger text-white flex-grow-1 mx-1">Xóa danh mục</a>
+                            <a onclick="Delete('/Category/DeleteCategory?id=${row.categoryID}')" 
+                               class="btn btn-danger text-white flex-grow-1 mx-1">
+                               <i class="fas fa-trash-alt me-2"></i>Xóa danh mục
+                            </a>
                         </div>`;
                     } else {
                         return `
                             <div class="btn-group d-flex justify-content-between" role="group">
-                                <a href="/Category/EditCategories?id=${row.id}" class="btn btn-dark flex-grow-1 mx-1">Sửa danh mục</a>
+                                <a href="/Category/EditCategory?id=${row.categoryID}" 
+                                    class="btn btn-dark flex-grow-1 mx-1">
+                                    <i class="fas fa-edit me-2"></i>Sửa danh mục
+                                </a>
                             </div>`;
                     }
                 }

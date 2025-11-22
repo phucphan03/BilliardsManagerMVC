@@ -1,6 +1,6 @@
 ﻿@model DataAccessObject.Models.Category
 @{
-    ViewData["Title"] = "Thêm danh mục";
+    ViewData["Title"] = "Cập nhật danh mục";
 }
 
 <div class="pc-container">
@@ -11,11 +11,12 @@
                     <div class="card shadow-lg border-0 rounded-lg">
                         <div class="card-header bg-primary text-white">
                             <h2 class="text-center my-2 text-white">
-                                <i class="fas fa-folder-plus me-2"></i>Tạo danh mục mới
+                                <i class="fas fa-folder-plus me-2"></i>Cập nhật danh mục
                             </h2>
                         </div>
                         <div class="card-body">
-                            <form asp-action="AddCategories" method="post">
+                            <form asp-action="EditCategory" method="post">
+                                <input type="hidden" asp-for="CategoryID" />
                                 <div class="mb-3">
                                     <label asp-for="Name" class="form-label fw-bold">Tên danh mục</label>
                                     <div class="input-group">
@@ -26,11 +27,11 @@
                                 </div>
 
                                 <div class="d-flex justify-content-between mt-4">
-                                    <a asp-action="ManageCategory" class="btn btn-secondary">
+                                    <a asp-action="Index" class="btn btn-secondary">
                                         <i class="fas fa-arrow-left me-2"></i>Trở về danh sách
                                     </a>
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-plus me-2"></i>Thêm danh mục
+                                        <i class="fas fa-plus me-2"></i>Cập nhật
                                     </button>
                                 </div>
                             </form>

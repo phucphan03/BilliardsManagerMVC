@@ -19,7 +19,7 @@ namespace BusinessObject.Services
 
         public async Task<Category?> GetCategoryByIdAsync(Guid id)
         {
-            return await _unitOfWork.CategoryRepo.GetAsync(c => c.ID == id);
+            return await _unitOfWork.CategoryRepo.GetAsync(c => c.CategoryID == id);
         }
 
         public async Task AddCategoryAsync(Category category)
@@ -31,7 +31,7 @@ namespace BusinessObject.Services
         public async Task UpdateCategoryAsync(Category category)
         {
             var existingCategory = await _unitOfWork.CategoryRepo
-                .GetAsync(c => c.ID == category.ID, asNoTracking: false);
+                .GetAsync(c => c.CategoryID == category.CategoryID, asNoTracking: false);
             if (existingCategory != null)
             {
                 existingCategory.Name = category.Name;
@@ -42,7 +42,7 @@ namespace BusinessObject.Services
         public async Task DeleteCategoryAsync(Guid id)
         {
             var category = await _unitOfWork.CategoryRepo
-                .GetAsync(c => c.ID == id, asNoTracking: false);
+                .GetAsync(c => c.CategoryID == id, asNoTracking: false);
             if (category != null)
             {
                 _unitOfWork.CategoryRepo.Remove(category);

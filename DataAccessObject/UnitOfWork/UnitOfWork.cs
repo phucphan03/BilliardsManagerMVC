@@ -1,5 +1,7 @@
 ﻿using DataAccessObject.Data;
 using DataAccessObject.Repositories.Interface;
+using Microsoft.Extensions.Options;
+using Ultitity.Options;
 
 namespace DataAccessObject.UnitOfWork
 {
@@ -14,8 +16,9 @@ namespace DataAccessObject.UnitOfWork
         public ITableProductRepo TableProductRepo { get; private set; }
         public ITableSessionRepo TableSessionRepo { get; private set; }
         public ITableSessionCueRepo TableSessionCueRepo { get; private set; }
+        public IImageRepo ImageRepo { get; private set; }
 
-        public UnitOfWork(ApplicationDbContext db)
+        public UnitOfWork(ApplicationDbContext db, IOptions<CloudinaryOptions> cloudaryOptions)
         {
             _db = db;
             CategoryRepo = new Repositories.CategoryRepo(_db);
@@ -25,6 +28,7 @@ namespace DataAccessObject.UnitOfWork
             TableProductRepo = new Repositories.TableProductRepo(_db);
             TableSessionRepo = new Repositories.TableSessionRepo(_db);
             TableSessionCueRepo = new Repositories.TableSessionCueRepo(_db);
+            ImageRepo = new Repositories.ImageRepo(_db, cloudaryOptions);
         }
 
         public async Task SaveAsync()
