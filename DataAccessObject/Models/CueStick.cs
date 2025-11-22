@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.ConstrainedExecution;
 
-namespace BusinessObject.Models
+namespace DataAccessObject.Models
 {
     public class CueStick
     {

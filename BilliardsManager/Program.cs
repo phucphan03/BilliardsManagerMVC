@@ -1,4 +1,6 @@
+using BusinessObject.FacadeService;
 using DataAccessObject.Data;
+using DataAccessObject.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
 namespace BilliardsManager
@@ -15,6 +17,8 @@ namespace BilliardsManager
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
             );
 
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IFacadeService, FacadeService>();
             var app = builder.Build();
 
             if (!app.Environment.IsDevelopment())

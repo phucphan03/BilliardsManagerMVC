@@ -1,4 +1,4 @@
-﻿using BusinessObject.Models;
+﻿using DataAccessObject.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessObject.Data

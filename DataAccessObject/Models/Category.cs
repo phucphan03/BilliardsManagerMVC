@@ -1,4 +1,4 @@
-﻿namespace BusinessObject.Models
+﻿namespace DataAccessObject.Models
 {
     public class Category
     {

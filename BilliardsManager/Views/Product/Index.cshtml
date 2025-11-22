@@ -1,0 +1,31 @@
+﻿@model IEnumerable<DataAccessObject.Models.Product>
+@{
+    ViewData["Title"] = "Quản lí sản phẩm";
+}
+<div class="pc-container">
+    <div class="pc-content">
+        <h2 class="text-center">Danh sách sản phẩm</h2>
+        <p class="text-end">
+            <a asp-action="AddProduct" class="btn btn-primary">Tạo sản phẩm mới</a>
+        </p>
+
+        <table id="tblData" class="table table-bordered" width="100%">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Danh mục</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+
+        <p class="text-end mt-2">
+            <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Trở về</a>
+        </p>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/Manager/product.js"></script>
+}

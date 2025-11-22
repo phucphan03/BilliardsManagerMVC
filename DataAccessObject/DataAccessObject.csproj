@@ -18,13 +18,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BusinessObject\BusinessObject.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="UnitOfWork\" />
-    <Folder Include="Repositories\Interface\" />
-  </ItemGroup>
-
 </Project>

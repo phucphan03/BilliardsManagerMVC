@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BusinessObject.Models
+namespace DataAccessObject.Models
 {
     public class TableSession
     {
