@@ -1,0 +1,74 @@
+﻿@using DataAccessObject.Models
+@model DataAccessObject.Models.Product
+@{
+    ViewData["Title"] = "Cập nhật sản phẩm";
+    var categories = ViewBag.Categories as IEnumerable<Category> ?? Enumerable.Empty<Category>();
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h2><i class="fas fa-box me-2"></i>Cập nhật sản phẩm</h2>
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditProduct" method="post" enctype="multipart/form-data">
+                        <input asp-for="ProductID" type="hidden" />
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+                            <input asp-for="Name" class="form-control" placeholder="Nhập tên sản phẩm" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Price" class="form-label">Giá sản phẩm</label>
+                            <input asp-for="Price" class="form-control" type="text" id="PriceInput" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="CategoryID" class="form-label">Danh mục</label>
+                            <select asp-for="CategoryID" class="form-select" asp-items="@(new SelectList(categories, "CategoryID", "Name"))">
+                                <option value="">-- Chọn danh mục --</option>
+                            </select>
+                            <span asp-validation-for="CategoryID" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="ProductImage" class="form-label">Hình ảnh</label>
+                            <input asp-for="ProductImage" type="file" class="form-control" />
+                            <span asp-validation-for="ProductImage" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Trở về</a>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Cập nhật</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const priceInput = document.getElementById('PriceInput');
+
+        priceInput.addEventListener('input', function(e) {
+            let value = this.value.replace(/\D/g, ''); // xóa tất cả ký tự không phải số
+            if (value) {
+                this.value = Number(value).toLocaleString('vi-VN'); // format VND
+            } else {
+                this.value = '';
+            }
+        });
+
+        // Khi submit, convert lại về number để gửi lên server
+        priceInput.closest('form').addEventListener('submit', function() {
+            let numericValue = priceInput.value.replace(/\./g, ''); // remove dấu '.'
+            priceInput.value = numericValue;
+        });
+    </script>
+}

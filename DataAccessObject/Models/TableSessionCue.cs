@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BusinessObject.Models
+namespace DataAccessObject.Models
 {
-    public class TableProduct
+    public class TableSessionCue
     {
         [Key]
-        public Guid TableProductID { get; set; }
+        public Guid TableSessionCueID { get; set; }
         public Guid TableSessionID { get; set; }
         public TableSession? TableSession { get; set; }
-        public Guid ProductID { get; set; }
-        public Product? Product { get; set; }
+        public Guid CueStickID { get; set; }
+        public CueStick? CueStick { get; set; }
         public int Quantity { get; set; }
         public decimal SubTotal { get; set; }
     }

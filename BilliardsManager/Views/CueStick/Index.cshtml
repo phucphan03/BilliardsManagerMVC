@@ -1,0 +1,30 @@
+﻿@model IEnumerable<DataAccessObject.Models.CueStick>
+@{
+    ViewData["Title"] = "Quản lí cơ bida";
+}
+<div class="pc-container">
+    <div class="pc-content">
+        <h2 class="text-center">Danh sách cơ bida</h2>
+        <p class="text-end">
+            <a asp-action="AddCueStick" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Tạo cơ mới
+            </a>
+        </p>
+
+        <table id="tblData" class="table table-bordered" width="100%">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Thương hiệu</th>
+                    <th>Giá/Lượt</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/Manager/cue_stick.js"></script>
+}
