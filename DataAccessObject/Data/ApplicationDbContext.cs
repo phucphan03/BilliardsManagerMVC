@@ -1,4 +1,4 @@
-﻿using BusinessObject.Models;
+﻿using DataAccessObject.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessObject.Data
@@ -15,6 +15,7 @@ namespace DataAccessObject.Data
         public DbSet<TableProduct> TableProducts { get; set; }
         public DbSet<TableSession> TableSessions { get; set; }
         public DbSet<TableSessionCue> TableSessionCues { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
