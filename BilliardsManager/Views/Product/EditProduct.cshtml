@@ -23,7 +23,7 @@
 
                         <div class="mb-3">
                             <label asp-for="Price" class="form-label">Giá sản phẩm</label>
-                            <input asp-for="Price" class="form-control" type="text" id="PriceInput" />
+                            <input type="text" asp-for="Price" id="PriceInput" class="form-control" />
                         </div>
 
                         <div class="mb-3">
@@ -56,18 +56,21 @@
     <script>
         const priceInput = document.getElementById('PriceInput');
 
-        priceInput.addEventListener('input', function(e) {
-            let value = this.value.replace(/\D/g, ''); // xóa tất cả ký tự không phải số
-            if (value) {
-                this.value = Number(value).toLocaleString('vi-VN'); // format VND
+        if(priceInput.value){
+            priceInput.value = parseInt(priceInput.value).toLocaleString('vi-VN');
+        }
+
+        priceInput.addEventListener('input', function() {
+            let value = this.value.replace(/\D/g, '');
+            if(value){
+                this.value = parseInt(value).toLocaleString('vi-VN');
             } else {
                 this.value = '';
             }
         });
 
-        // Khi submit, convert lại về number để gửi lên server
         priceInput.closest('form').addEventListener('submit', function() {
-            let numericValue = priceInput.value.replace(/\./g, ''); // remove dấu '.'
+            let numericValue = priceInput.value.replace(/\./g, '');
             priceInput.value = numericValue;
         });
     </script>

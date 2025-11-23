@@ -1,0 +1,430 @@
+﻿@using DataAccessObject.Models
+@using Ultitity.Extensions
+@model TableSession
+@{
+    ViewData["Title"] = "Chi tiết bàn bida";
+    var detailTable = Model.Table;
+    var detailProducts = Model.TableProducts;
+    var detail = Model;
+    string badgeColor = detailTable!.Status switch
+    {
+        TableStatus.Playing => "bg-success",
+        TableStatus.WaitingPayment => "bg-warning",
+        _ => "bg-secondary"
+    };
+    //Tiền
+    decimal tableAmount = (decimal)ViewBag.TableAmount;
+    decimal productAmount = (decimal)ViewBag.ProductAmount;
+    decimal totalAmount = (decimal)ViewBag.TotalAmount;
+    DateTime startTime = (DateTime)ViewBag.StartTime;
+}
+
+<div class="container py-5">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-primary mb-1">Chi tiết @detailTable!.TableName</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/Table" class="text-decoration-none">Danh sách bàn</a></li>
+                    <li class="breadcrumb-item active">@detailTable.TableName</li>
+                </ol>
+            </nav>
+        </div>
+        <a asp-action="Index" asp-controller="Table" class="btn btn-outline-secondary">
+            <i class="fa fa-arrow-left me-2"></i>Quay lại
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <!-- Cột trái - Thông tin bàn -->
+        <div class="col-lg-5">
+            <!-- Card thông tin bàn -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0"><i class="fa fa-info-circle me-2"></i>Thông tin bàn</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="table-icon-large text-center mb-4">
+                        <h4 class="mt-3 fw-bold">@detailTable.TableName</h4>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label"><i class="fa fa-circle text-success me-2"></i>Trạng thái:</span>
+                        <span class="badge @badgeColor px-3 py-2">@detailTable.Status.GetDisplayName()</span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label"><i class="fa fa-calendar-check text-primary me-2"></i>Ngày bắt đầu:</span>
+                        <span class="info-value">@detail.StartTime.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label"><i class="fa fa-calendar-times text-danger me-2"></i>Ngày kết thúc:</span>
+                        <span class="info-value">
+                            @(detail.EndTime?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa kết thúc")
+                        </span>
+                    </div>
+
+                    <div class="info-item border-top pt-3 mt-3">
+                        <span class="info-label"><i class="fa fa-clock text-primary me-2"></i>Tổng thời gian:</span>
+
+                        <span class="info-value fw-bold text-primary fs-5" id="durationText">
+                            @if (ViewBag.EndTime != null)
+                            {
+                                @($"{ViewBag.DurationHours} giờ {((int)ViewBag.DurationMinutes % 60)} phút")
+                            }
+                            else
+                            {
+                                @:0 giờ 0 phút
+                            }
+                        </span>
+                    </div>
+
+
+                    <div class="info-item">
+                        <span class="info-label"><i class="fa fa-stopwatch text-warning me-2"></i>Số phút:</span>
+
+                        <span class="info-value" id="totalMinutes">
+                            @if (ViewBag.EndTime != null)
+                            {
+                                @($"{(int)ViewBag.DurationMinutes} phút")
+                            }
+                            else
+                            {
+                                @:0 phút
+                            }
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card tổng tiền -->
+            <div class="card shadow-sm border-0 bg-primary text-white">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-1 opacity-75">Tổng số tiền phải trả</p>
+                            <h2 class="mb-0 fw-bold" id="totalAmount">@totalAmount.ToString("N0") VNĐ</h2>
+                        </div>
+                        <div class="fs-1">
+                            <i class="fa fa-money-bill-wave"></i>
+                        </div>
+                    </div>
+                    <hr class="my-3 opacity-25">
+                    <div class="small">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Tiền bàn:</span>
+                            <span id="tableAmount">@tableAmount.ToString("N0") VNĐ</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Tiền sản phẩm:</span>
+                            <span id="productAmount">@productAmount.ToString("N0") VNĐ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cột phải - Sản phẩm -->
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fa fa-shopping-cart me-2"></i>Danh sách sản phẩm</h5>
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                            <i class="fa fa-plus-circle me-1"></i>Thêm sản phẩm
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <!-- Danh sách sản phẩm -->
+                    <div class="product-list">
+                        @if (detailProducts != null && detailProducts.Any())
+                        {
+                            @foreach (var tp in detailProducts)
+                            {
+                                <div class="product-item mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <img src="@(tp.Product?.ProductImage?.ImageUrl ?? "https://res.cloudinary.com/dahinowbc/image/upload/v1763830996/No_Image_Available_a2pzvp.jpg")"
+                                             alt="@tp.Product?.Name" class="product-image">
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="mb-1 fw-semibold">@tp.Product?.Name</h6>
+                                            <p class="text-muted small mb-1">@String.Format("{0:N0} VNĐ", tp.Product?.Price) @* / @tp.Product?.Unit *@</p>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-light text-dark">Số lượng: @tp.Quantity</span>
+                                                <span class="ms-2 text-primary fw-bold">@String.Format("{0:N0} VNĐ", tp.SubTotal)</span>
+                                            </div>
+                                        </div>
+                                        <form method="post" asp-action="DeleteProductFromTableSession" class="ms-2">
+                                            <input type="hidden" name="tableProductId" value="@tp.TableProductID" />
+                                            <input type="hidden" name="tableId" value="@Model.TableID" />
+                                            <input type="hidden" name="tableSessionId" value="@Model.TableSessionID" />
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="text-center py-5" id="emptyState">
+                                <i class="fa fa-shopping-cart text-muted" style="font-size: 3rem;"></i>
+                                <p class="text-muted mt-3">Chưa có sản phẩm nào</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="mt-4 d-flex gap-2">
+                @if(detailTable.Status == TableStatus.Playing)
+                {
+                    <a asp-action="PaymentTableSession" asp-route-tableId="@Model.TableID"
+                       asp-route-tableSessionId="@Model.TableSessionID"
+                       class="btn btn-success flex-fill py-3">
+                        <i class="fa fa-check-circle me-2"></i>Thanh toán
+                    </a>
+                    <button class="btn btn-outline-danger py-3">
+                        <i class="fa fa-times-circle me-2"></i>Hủy
+                    </button>
+                }
+                else
+                {
+                    <a asp-action="OKTableSession" asp-route-tableSessionId="@Model.TableSessionID"
+                       class="btn btn-success flex-fill py-3">
+                        <i class="fa fa-check-circle me-2"></i>Kết thúc
+                    </a>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal thêm sản phẩm -->
+<div class="modal fade" id="addProductModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="fa fa-plus-circle me-2"></i>Thêm sản phẩm</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="AddProductToTableSession" method="post">
+                    <input type="hidden" name="tableId" value="@Model.TableID" />
+                    <input type="hidden" name="tableSessionId" value="@Model.TableSessionID" />
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Chọn sản phẩm</label>
+                        <select class="form-select" name="productId" required>
+                            <option value="" selected>-- Chọn sản phẩm --</option>
+                            @foreach (var p in (List<SelectListItem>)ViewBag.Products)
+                            {
+                                <option value="@p.Value">@p.Text</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Số lượng</label>
+                        <input type="number" class="form-control" name="quantity" value="1" min="1" />
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-plus me-1"></i>Thêm
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        border: none;
+    }
+
+    /* Thông tin bàn */
+    .info-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+    }
+
+    .info-label {
+        font-weight: 500;
+        color: #6c757d;
+        display: flex;
+        align-items: center;
+    }
+
+    .info-value {
+        font-weight: 600;
+        color: #212529;
+    }
+
+    /* Sản phẩm */
+    .product-list {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    .product-item {
+        padding: 20px;
+        border-bottom: 1px solid #e9ecef;
+        transition: background-color 0.2s;
+    }
+
+        .product-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+    .product-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+    }
+
+    /* Buttons */
+    .btn {
+        border-radius: 10px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0a58ca 0%, #084298 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(13, 110, 253, 0.3);
+        }
+
+    .btn-success {
+        background: linear-gradient(135deg, #198754 0%, #157347 100%);
+        border: none;
+    }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #157347 0%, #0f5132 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(25, 135, 84, 0.3);
+        }
+
+    .btn-outline-danger:hover {
+        transform: translateY(-2px);
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+        background: none;
+        padding: 0;
+    }
+
+    .breadcrumb-item a {
+        color: #0d6efd;
+    }
+
+    /* Badge */
+    .badge {
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    /* Modal */
+    .modal-content {
+        border-radius: 15px;
+        border: none;
+    }
+
+    /* Scrollbar */
+    .product-list::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .product-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .product-list::-webkit-scrollbar-thumb {
+        background: #0d6efd;
+        border-radius: 3px;
+    }
+
+        .product-list::-webkit-scrollbar-thumb:hover {
+            background: #0a58ca;
+        }
+</style>
+
+<script>
+    const startTime = new Date("@startTime.ToString("o")");
+    const tableStatus = "@detailTable.Status";
+
+    const durationText = document.getElementById("durationText");
+    const totalMinutesElem = document.getElementById("totalMinutes");
+
+    const tableAmountElem = document.getElementById("tableAmount");
+    const totalAmountElem = document.getElementById("totalAmount");
+
+    const moneyPerHour = 50000;
+    const productAmount = @productAmount;
+
+    function updateDuration() {
+        const now = new Date();
+        let diffMs = now - startTime;
+        let totalMinutes = Math.floor(diffMs / 60000);
+        let hours = Math.floor(totalMinutes / 60);
+        let minutes = totalMinutes % 60;
+
+        durationText.textContent = `${hours} giờ ${minutes} phút`;
+        totalMinutesElem.textContent = `${totalMinutes} phút`;
+    }
+
+    function updateAmounts() {
+        const now = new Date();
+        const diffHours = (now - startTime) / (1000 * 60 * 60);
+        const tableAmount = Math.ceil(diffHours * moneyPerHour);
+        const totalAmount = tableAmount + productAmount;
+
+        tableAmountElem.textContent = tableAmount.toLocaleString() + " VNĐ";
+        totalAmountElem.textContent = totalAmount.toLocaleString() + " VNĐ";
+    }
+
+    // 🔥🔥🔥 CHỈ realtime khi Playing
+    if (tableStatus === "Playing") {
+        updateDuration();
+        updateAmounts();
+        setInterval(updateDuration, 1000);
+        setInterval(updateAmounts, 1000);
+    }
+</script>
+
+
+

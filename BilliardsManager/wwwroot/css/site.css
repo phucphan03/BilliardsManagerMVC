@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -29,3 +29,11 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+.navbar-nav .nav-item .nav-link.active {
+    border: 1px solid deepskyblue; /* viền xanh da trời */
+    border-radius: 5px; /* bo góc mềm mại */
+    padding: 5px 10px; /* khoảng cách cho viền */
+    background-color: #e0f7ff; /* nền xanh nhạt */
+    color: #000 !important; /* chữ đen nếu cần */
+}
+
