@@ -6,5 +6,9 @@ namespace BusinessObject.FacadeService
         ICategoryService CategoryService { get; }
         IProductService ProductService { get; }
         ICueStickService CueStickService { get; }
+        ITableService TableService { get; }
+        ITableSessionService TableSessionService { get; }
+        ITableProductService TableProductService { get; }
+        ITableSessionCueService TableSessionCueService { get; }
     }
 }

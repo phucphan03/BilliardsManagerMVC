@@ -12,13 +12,13 @@ namespace DataAccessObject.Models
     }
     public enum TableStatus
     {
-        [Display(Name = "Empty")]
+        [Display(Name = "Trống")]
         Empty,
 
-        [Display(Name = "Playing")]
+        [Display(Name = "Đang chơi")]
         Playing,
 
-        [Display(Name = "WaitingPayment")]
+        [Display(Name = "Chờ thanh toán")]
         WaitingPayment
     }
 }
