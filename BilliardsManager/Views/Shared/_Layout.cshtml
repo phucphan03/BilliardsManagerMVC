@@ -1,5 +1,5 @@
 ﻿@{
-    string currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    string currentController = ViewContext.RouteData.Values["controller"]?.ToString()!;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -58,7 +58,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - BilliardsManager - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - BilliardsManager - <a asp-area="" asp-controller="Table" asp-action="Index">Home</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
